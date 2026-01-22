@@ -80,18 +80,35 @@ class Stage {
 
     update(){
         //Fighter 1
-        this.fighter1EL.querySelector('.name').innerHTML = `${this.fighter1.name} - ${this.fighter1.life} HP`;
+        this.fighter1EL.querySelector('.name').innerHTML = `${this.fighter1.name} - ${this.fighter1.life.toFixed(1)} HP`;
         let f1Pct = (this.fighter1.life / this.fighter1.maxLife) * 100;
         this.fighter1EL.querySelector('.bar').style.width = `${f1Pct}%`;
 
         //Fighter 2
-        this.fighter2EL.querySelector('.name').innerHTML = `${this.fighter2.name} - ${this.fighter2.life} HP`;
+        this.fighter2EL.querySelector('.name').innerHTML = `${this.fighter2.name} - ${this.fighter2.life.toFixed(1)} HP`;
         let f2Pct = (this.fighter2.life / this.fighter2.maxLife) * 100;
         this.fighter2EL.querySelector('.bar').style.width = `${f2Pct}%`;
     }
 
     doAttack(attacking, attacked){
-        console.log(`${attacking.name} está atacando ${attacked.name}`)
+        if(attacking.life <= 0 || attacked.life <= 0){
+            console.log(`Atacando cachorro morto.`);
+            return;
+        }
+
+        let attackFactor = (Math.random() * 2).toFixed(2);
+        let defenseFactor = (Math.random() * 2).toFixed(2);
+
+        let actualAttack = attacking.attack * attackFactor;
+        let actualDefense = attacking.defense * defenseFactor;
+
+        if(actualAttack > actualDefense){
+            attacked.life -= actualAttack;
+            console.log(`${attacking.name} causou ${actualAttack.toFixed(2)} de dano em ${attacked.name}`);
+        }else {
+            console.log(`${attacked.name} conseguiu defender...`)
+        }
+
         this.update();
     }
 }
